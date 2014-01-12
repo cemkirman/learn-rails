@@ -6,9 +6,6 @@ gem 'rails', '4.0.2'
 # We are using Ruby 2.1.0
 ruby '2.1.0'
 
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
-
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
@@ -44,4 +41,11 @@ group :development do
   gem 'better_errors'
   gem 'quiet_assets'
   gem 'rails_layout'
+  gem 'sqlite3'
+end
+
+group :production do
+  gem 'pg'
+  gem 'rails_12factor'
+  gem 'thin'
 end
