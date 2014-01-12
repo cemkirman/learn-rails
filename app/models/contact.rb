@@ -12,4 +12,22 @@ class Contact < ActiveRecord::Base
   validates_format_of :email, :with => /\A[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}/i
   validates_length_of :content, :maximum => 500
 
+  def update_spreadsheet
+    connection = GoogleDrive.login(ENV["GMAIL_USERNAME"], ENV["GMAIL_PASSWORD"])
+    ss = connection.spreadsheet_by_title('Learn-Rails-Example')
+
+    if ss.nil?
+      ss = connection.create_spreadsheet('Learn-Rails-Example')
+    end
+
+    work_sheet = ss.worksheets[0]
+    last_row = work_sheet.num_rows + 1
+
+    work_sheet[last_row, 1] = Time.new
+    work_sheet[last_row, 2] = self.name
+    work_sheet[last_row, 3] = self.email
+    work_sheet[last_row, 4] = self.content
+    work_sheet.save
+  end
+
 end
